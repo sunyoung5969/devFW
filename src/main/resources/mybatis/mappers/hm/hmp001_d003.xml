@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hm.hmp001_d003">
+	<resultMap id="hmp001_d003Result01" type="hmp001_d003VO">
+		<result property="pprod_id" column="prod_id"  />
+		<result property="pprod_name" column="prod_name" />
+		<result property="pprod_price" column="prod_price" />
+		<result property="pprod_desc" column="prod_desc" />
+		<result property="vvend_name" column="vend_name" />
+	</resultMap>
+
+	<select id="searchList3" resultMap="hmp001_d003Result01" parameterType="java.util.Map"> 
+      <![CDATA[
+         select p.prod_id, p.prod_name, p.prod_price, p.prod_desc, v.vend_name
+         from   products p, vendors v where p.vend_id = v.vend_id
+      ]]>
+		<where>
+			<if test=" p_id != ''  and  p != null">
+				id = #{p_id}
+			</if>
+		</where>
+	</select>
+
+	<select id="searchMod" resultMap="hmp001_d003Result01" parameterType="java.util.Map"> 
+      <![CDATA[
+         select id, pwd, name, email, joinDate, num
+         from   t_member
+      ]]>
+		<where>
+			<if test=" p_id != ''  and  p_id != null">
+				id = #{p_id}
+			</if>
+		</where>
+	</select>
+	
+	<update id="updateMember" parameterType="java.util.Map">
+		update t_member
+		set  pwd = #{pwd}
+		   , name = #{name}
+		   , email = #{email}
+		   , joinDate = #{joinDate}
+		   , num = #{num, jdbcType=NUMERIC}
+		where id = #{id}
+	</update>
+	
+	<insert id="insertMember" parameterType="java.util.Map">
+		insert into t_member(id, pwd, name, email) values(#{id}, #{pwd}, #{name}, #{email})
+	</insert>	
+
+</mapper>
